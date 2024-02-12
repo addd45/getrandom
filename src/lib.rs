@@ -11,9 +11,9 @@
 //! | FreeBSD           | `*‑freebsd`        | [`getrandom`][5] if available, otherwise [`kern.arandom`][6]
 //! | OpenBSD           | `*‑openbsd`        | [`getentropy`][7]
 //! | NetBSD            | `*‑netbsd`         | [`getrandom`][16] if available, otherwise [`kern.arandom`][8]
-//! | Dragonfly BSD     | `*‑dragonfly`      | [`getrandom`][9] if available, otherwise [`/dev/urandom`][10] (identical to `/dev/random`)
+//! | Dragonfly BSD     | `*‑dragonfly`      | [`getrandom`][9] if available, otherwise [`/dev/urandom`][10] (identical to `/dev/random`)
 //! | Solaris, illumos  | `*‑solaris`, `*‑illumos` | [`getrandom`][11] if available, otherwise [`/dev/random`][12]
-//! | Fuchsia OS        | `*‑fuchsia`        | [`cprng_draw`]
+//! | Fuchsia OS        | `*‑fuchsia`        | [`cprng_draw`]
 //! | Redox             | `*‑redox`          | `/dev/urandom`
 //! | Haiku             | `*‑haiku`          | `/dev/urandom` (identical to `/dev/random`)
 //! | Hermit            | `*-hermit`         | [`sys_read_entropy`]
@@ -220,7 +220,7 @@ cfg_if! {
     if #[cfg(any(target_os = "haiku", target_os = "redox", target_os = "nto", target_os = "aix"))] {
         mod util_libc;
         #[path = "use_file.rs"] mod imp;
-    } else if #[cfg(any(target_os = "android", target_os = "linux"))] {
+    } else if #[cfg(target_os = "android")] {
         mod util_libc;
         mod use_file;
         mod lazy;
@@ -270,7 +270,7 @@ cfg_if! {
     } else if #[cfg(target_os = "emscripten")] {
         mod util_libc;
         #[path = "emscripten.rs"] mod imp;
-    } else if #[cfg(all(target_arch = "x86_64", target_env = "sgx"))] {
+    } else if #[cfg(any(all(target_arch = "x86_64", target_env = "sgx"), target_os = "linux"))] {
         mod lazy;
         #[path = "rdrand.rs"] mod imp;
     } else if #[cfg(all(feature = "rdrand",
