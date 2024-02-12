@@ -8,7 +8,7 @@ description = "A small cross-platform library for retrieving random data from sy
 documentation = "https://docs.rs/getrandom"
 repository = "https://github.com/rust-random/getrandom"
 categories = ["os", "no-std"]
-exclude = [".*"]
+exclude = ["utils/*", ".*", "appveyor.yml", "/sgx/*"]
 
 [dependencies]
 log = { git = "https://github.com/mesalock-linux/log-sgx", optional = true, default-features = false }
